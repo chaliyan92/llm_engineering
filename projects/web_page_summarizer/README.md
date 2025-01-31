@@ -1,10 +1,6 @@
-## LLM Engineering
+## Web Page Summarizer
 
-This repository contains the learnings and code materials to understand the inteactions with LLMs.
-
-- Learnign notes
-- Pet projects
-
+This projects uses OpenAI to summarize the contenet of a given webpage
 
 ### Prerequisite
 
