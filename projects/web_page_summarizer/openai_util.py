@@ -1,7 +1,11 @@
 import os
+import logging
 from openai import OpenAI
 from dotenv import load_dotenv
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class OpenAIUtils:
     def __init__(self):
@@ -10,12 +14,11 @@ class OpenAIUtils:
 
         # Check the key
         if not api_key:
-            print("No API key was found - please make sure to include an .env file with your OpenAI API key with the name OPENAI_API_KEY")
+            logger.error("No API key was found - please make sure to include an .env file with your OpenAI API key with the name OPENAI_API_KEY")
             exit(-1)
         self.openai = OpenAI(api_key=api_key)
 
     def summarize_text(self, system_prompt, user_prompt, model="gpt-4o-mini"):
-
         try:
             response = self.openai.chat.completions.create(
                 model=model,
@@ -26,5 +29,5 @@ class OpenAIUtils:
             )
             return response.choices[0].message.content
         except Exception as e:
-            print(f"Error summarizing text: {e}")
+            logger.error(f"Error summarizing text: {e}")
             return None

@@ -3,7 +3,11 @@ from bs4 import BeautifulSoup
 from rich.console import Console
 from rich.markdown import Markdown
 from openai_util import OpenAIUtils
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class WebPageSummarizer:
 
@@ -22,7 +26,7 @@ class WebPageSummarizer:
             self.text = soup.body.get_text(separator="\n", strip=True)
             return [self.title, self.text]
         except Exception as e:
-            print(f"An error occurred while scraping the website: {e}")
+            logger.error(f"An error occurred while scraping the website: {e}")
             return None
 
     def send_request(self, url, headers):
@@ -30,7 +34,7 @@ class WebPageSummarizer:
             response = requests.get(url, headers=headers)
             response.raise_for_status()
         except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
+            logger.error(f"An error occurred: {e}")
             return None
         return response
 
@@ -69,7 +73,6 @@ class WebPageSummarizer:
         return openai_util.summarize_text(system_prompt, user_prompt, model="gpt-4o-mini")
 
     # Fetches the summary of the given URL and displays it in markdown format.
-
     def display_summary(self):
         try:
             summary = self.summarize()
@@ -79,6 +82,5 @@ class WebPageSummarizer:
             md = Markdown(summary)
             console.print(md)
         except Exception as e:
-            print(
-                f"An error occurred while summarizing the webpage using openAI: {e}")
+            logger.error(f"An error occurred while summarizing the webpage using openAI: {e}")
             return
