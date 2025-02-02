@@ -18,7 +18,7 @@ class OpenAIUtils:
             exit(-1)
         self.openai = OpenAI(api_key=api_key)
 
-    def summarize_text(self, system_prompt, user_prompt, model="gpt-4o-mini"):
+    def generate_response(self, system_prompt, user_prompt, model="gpt-4o-mini"):
         try:
             response = self.openai.chat.completions.create(
                 model=model,
@@ -27,6 +27,7 @@ class OpenAIUtils:
                     {"role": "user", "content": user_prompt}
                 ]
             )
+            logger.info(f"Using model: {model} with openai")
             return response.choices[0].message.content
         except Exception as e:
             logger.error(f"Error summarizing text: {e}")

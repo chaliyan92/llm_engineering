@@ -4,6 +4,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 from openai_util import OpenAIUtils
 import logging
+from ollama_util import OllamaUtils
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -52,7 +53,7 @@ class WebPageSummarizer:
             Respond in markdown."
         return system_prompt
 
-    def summarize(self):
+    def summarize(self, use_openai):
         # Some websites need you to use proper headers when fetching them:
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
@@ -68,19 +69,23 @@ class WebPageSummarizer:
         user_prompt = self.create_user_prompt(website_data[0], website_data[1])
         system_prompt = self.create_system_prompt()
 
-        # calls openAI to summarize the text
-        openai_util = OpenAIUtils()
-        return openai_util.summarize_text(system_prompt, user_prompt, model="gpt-4o-mini")
+        if use_openai:
+            openai_util = OpenAIUtils()
+            return openai_util.generate_response(system_prompt, user_prompt, model="gpt-4o-mini")
+        else:
+            ollama_util = OllamaUtils()
+            return ollama_util.generate_response(system_prompt, user_prompt, model="deepseek-r1:1.5b")
 
     # Fetches the summary of the given URL and displays it in markdown format.
-    def display_summary(self):
+    def display_summary(self, use_openai):
         try:
-            summary = self.summarize()
+            logger.info("Summarizing the webpage...")
+            summary = self.summarize(use_openai)
             if summary is None:
                 raise ValueError("Failed to summarize the webpage.")
             console = Console()
             md = Markdown(summary)
             console.print(md)
         except Exception as e:
-            logger.error(f"An error occurred while summarizing the webpage using openAI: {e}")
+            logger.error(f"An error occurred while summarizing the webpage: {e}")
             return
