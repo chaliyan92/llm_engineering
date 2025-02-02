@@ -1,11 +1,13 @@
 ## Web Page Summarizer
 
-This projects uses OpenAI to summarize the contenet of a given webpage
+This projects uses OpenAI to summarize the content of a given webpage
 
 ### Prerequisite
 
  - A python installation
  - Refer to VSCode configuration to support Python development https://code.visualstudio.com/docs/python/python-tutorial
+ - If using OpenAI, an API key with min 5USD credit
+ - Ollama, if running models locally
 
 ### How to run
 
