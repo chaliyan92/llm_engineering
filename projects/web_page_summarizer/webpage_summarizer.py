@@ -1,10 +1,10 @@
-import requests
+import logging
 from bs4 import BeautifulSoup
 from rich.console import Console
 from rich.markdown import Markdown
 from openai_util import OpenAIUtils
-import logging
 from ollama_util import OllamaUtils
+from request_util import RequestUtil
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -31,13 +31,7 @@ class WebPageSummarizer:
             return None
 
     def send_request(self, url, headers):
-        try:
-            response = requests.get(url, headers=headers)
-            response.raise_for_status()
-        except requests.exceptions.RequestException as e:
-            logger.error(f"An error occurred: {e}")
-            return None
-        return response
+        return RequestUtil.get(url, headers=headers)
 
     def create_user_prompt(self, title, text):
         user_prompt = f"You are looking at a website titled {title}"
