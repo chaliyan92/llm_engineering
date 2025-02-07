@@ -1,12 +1,13 @@
 import requests
 
+
 class RequestUtil:
     @staticmethod
     def get(url, params=None, headers=None):
         try:
             response = requests.get(url, params=params, headers=headers)
             response.raise_for_status()
-            return response.json()
+            return response
         except requests.exceptions.RequestException as e:
             print(f"GET request failed: {e}")
             return None
