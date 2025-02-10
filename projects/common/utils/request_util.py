@@ -5,7 +5,7 @@ class RequestUtil:
     @staticmethod
     def get(url, params=None, headers=None):
         try:
-            response = requests.get(url, params=params, headers=headers)
+            response = requests.get(url, params=params, headers=headers, verify=False)
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:

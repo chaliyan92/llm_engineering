@@ -2,9 +2,9 @@ import logging
 from bs4 import BeautifulSoup
 from rich.console import Console
 from rich.markdown import Markdown
-from utils.openai_util import OpenAIUtils
-from utils.ollama_util import OllamaUtils
-from utils.request_util import RequestUtil
+from common.utils.openai_util import OpenAIUtils
+from common.utils.ollama_util import OllamaUtils
+from common.utils.request_util import RequestUtil
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
