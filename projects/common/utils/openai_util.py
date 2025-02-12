@@ -25,7 +25,8 @@ class OpenAIUtils:
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
-                ]
+                ],
+                response_format={"type": "json_object"}
             )
             logger.info(f"Using model: {model} with openai")
             return response.choices[0].message.content
