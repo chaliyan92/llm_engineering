@@ -18,17 +18,17 @@ class OpenAIUtils:
             exit(-1)
         self.openai = OpenAI(api_key=api_key)
 
-    def generate_response(self, system_prompt, user_prompt, model="gpt-4o-mini"):
+    def generate_response(self, system_prompt, user_prompt, model="gpt-4o-mini", response_type="text"):
         try:
+            logger.info(f"Using model: {model} with openai")
             response = self.openai.chat.completions.create(
                 model=model,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
-                response_format={"type": "json_object"}
+                response_format={"type": response_type}
             )
-            logger.info(f"Using model: {model} with openai")
             return response.choices[0].message.content
         except Exception as e:
             logger.error(f"Error summarizing text: {e}")

@@ -1,15 +1,18 @@
 import requests
+import logging
 
-
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 class RequestUtil:
     @staticmethod
     def get(url, params=None, headers=None):
         try:
-            response = requests.get(url, params=params, headers=headers, verify=False)
+            response = requests.get(url, params=params, headers=headers, verify=True)
             response.raise_for_status()
             return response
         except requests.exceptions.RequestException as e:
-            print(f"GET request failed: {e}")
+            logging.error(f"GET request failed: {e}")
             return None
 
     @staticmethod
@@ -19,7 +22,7 @@ class RequestUtil:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"POST request failed: {e}")
+            logger.error(f"POST request failed: {e}")
             return None
 
     @staticmethod
@@ -29,7 +32,7 @@ class RequestUtil:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"PUT request failed: {e}")
+            logger.error(f"PUT request failed: {e}")
             return None
 
     @staticmethod
@@ -39,5 +42,5 @@ class RequestUtil:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            print(f"DELETE request failed: {e}")
+            logger.error(f"DELETE request failed: {e}")
             return None

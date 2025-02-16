@@ -74,17 +74,7 @@ class CompanyBrochure:
         user_prompt += "Links (some might be relative links):\n"
         user_prompt += "\n".join(self.return_links())
         return user_prompt
-    
-    # def get_all_details(url):
-    #     result = "Landing page:\n"
-    #     result += Website(url).get_contents()
-    #     links = get_links(url)
-    #     print("Found links:", links)
-    #     for link in links["links"]:
-    #         result += f"\n\n{link['type']}\n"
-    #         result += Website(link["url"]).get_contents()
-    #     return result
-    
+
     def send_request(self, url):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
@@ -95,7 +85,6 @@ class CompanyBrochure:
         return response
     
     def get_website_content(self, url):
-        print(url + " {}{}{}{}{}{}{}")
         response = self.send_request(url)
         self.scrape_website(response)
         return self.get_contents()
@@ -104,22 +93,23 @@ class CompanyBrochure:
         openai_util = OpenAIUtils()
         result = "Landing page:\n"
         result += self.get_website_content(self.url)
-        links = openai_util.generate_response(self.link_system_prompt(), self.get_links_user_prompt())
+        links = openai_util.generate_response(self.link_system_prompt(), self.get_links_user_prompt(),  response_type="json_object")
         try:
             json_output = json.loads(links)
-            print(json_output)
         except json.JSONDecodeError as e:
-            print(f"Error decoding JSON: {e}")
-            print(f"Raw response content: {links}")
+            logger.error(f"Error decoding JSON: {e}")
+            logger.error(f"Raw response content: {links}")
         if "links" not in json_output:
             return None
         for link in json_output["links"]:
-            print(link)
             result += f"\n\n{link['type']}\n"
             result += self.get_website_content(link["url"])
         return result
     
     def print_markdown(self, content):
+        if content is None:
+            logger.error("No content to display.")
+            return
         console = Console()
         md = Markdown(content)
         console.print(md)
