@@ -48,5 +48,11 @@ Ref - [link](https://www.ibm.com/think/topics/context-window)
 - Zero shot prompting - You don't give an example, LLM figure all the things on its own
 
 
-Own idea to collate all the latest tech news by LLM refering to best tech sites
+Own idea to collate all the latest tech news by LLM referring to best tech sites
 infoq, twitter, dev.io etc ...
+
+## Week 2 - Day 3
+
+- System Prompt - Establish ground rules like "If you don't know the answer, just say so". Provide critical background context
+- Context - More relevant background information pertaining to the topic
+- Multi Shot Prompting - Providing examples for the context
