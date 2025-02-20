@@ -104,7 +104,7 @@ class CompanyBrochure:
             return None
         for link in json_output["links"]:
             result += f"\n\n{link['type']}\n"
-            title, text = self.get_website_content(link["url"])
+            title, text, _ = self.get_website_content(link["url"])
             result += self.get_contents(title, text)
         return result
     
