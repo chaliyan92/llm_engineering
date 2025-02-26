@@ -29,6 +29,7 @@ class OpenAIUtils:
                 + history_messages
                 + [{"role": "user", "content": user_prompt}]
         )
+        logger.info(f"Message list: {message_list}")
         try:
             logger.info(f"Using model: {model} with openai with response type: {response_type} and streaming: {stream}")
             response = self.openai.chat.completions.create(
@@ -37,11 +38,10 @@ class OpenAIUtils:
                 response_format={"type": response_type},
                 stream=stream
             )
-            if stream:
+            if response:
                 result = ""
                 for chunk in response:
-                    result += chunk["choices"][0]["delta"].get("content", '')
-                    logger.info(f"**********Chunk: {chunk}")
+                    result += chunk.choices[0].delta.content or ""
                     yield result
             else:
                 return response.choices[0].message.content
