@@ -16,6 +16,8 @@ class WebPageSummarizer:
         """
         Create this Website object from the given url using the BeautifulSoup library
         """
+        self.text = None
+        self.title = None
         self.url = url
 
     def scrape_website(self, response):
@@ -50,7 +52,8 @@ class WebPageSummarizer:
     def summarize(self, use_openai):
         # Some websites need you to use proper headers when fetching them:
         headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/117.0.0.0 Safari/537.36"
         }
         response = self.send_request(self.url, headers)
         if response is None:

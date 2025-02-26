@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class OpenAIUtils:
     def __init__(self):
         load_dotenv(override=True)
@@ -14,22 +15,36 @@ class OpenAIUtils:
 
         # Check the key
         if not api_key:
-            logger.error("No API key was found - please make sure to include an .env file with your OpenAI API key with the name OPENAI_API_KEY")
+            logger.error("No API key was found - please make sure to include an .env file with your OpenAI API key "
+                         "with the name OPENAI_API_KEY")
             exit(-1)
         self.openai = OpenAI(api_key=api_key)
 
-    def generate_response(self, system_prompt, user_prompt, model="gpt-4o-mini", response_type="text"):
+    def generate_response(self, system_prompt, user_prompt, history_messages=None, model="gpt-4o-mini",
+                          response_type="text", stream=False):
+        if history_messages is None:
+            history_messages = []
+        message_list = (
+                [{"role": "system", "content": system_prompt}]
+                + history_messages
+                + [{"role": "user", "content": user_prompt}]
+        )
         try:
-            logger.info(f"Using model: {model} with openai")
+            logger.info(f"Using model: {model} with openai with response type: {response_type} and streaming: {stream}")
             response = self.openai.chat.completions.create(
                 model=model,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
-                ],
-                response_format={"type": response_type}
+                messages=message_list,
+                response_format={"type": response_type},
+                stream=stream
             )
-            return response.choices[0].message.content
+            if stream:
+                result = ""
+                for chunk in response:
+                    result += chunk["choices"][0]["delta"].get("content", '')
+                    logger.info(f"**********Chunk: {chunk}")
+                    yield result
+            else:
+                return response.choices[0].message.content
         except Exception as e:
             logger.error(f"Error summarizing text: {e}")
             return None
