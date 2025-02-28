@@ -1,5 +1,6 @@
 import os
 import logging
+import json
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -45,6 +46,26 @@ class OpenAIUtils:
                     yield result
             else:
                 return response.choices[0].message.content
+        except Exception as e:
+            logger.error(f"Error summarizing text: {e}")
+            return None
+        
+    def generate_response_with_tools(self, messages, model="gpt-4o-mini",
+                          response_type="text", tools = None, stream=False):
+        if tools is None:
+            tools = []
+
+        logger.info(f"Message list: {messages}")
+        try:
+            logger.info(f"Using model: {model} with openai with response type: {response_type} and streaming: {stream}")
+            response = self.openai.chat.completions.create(
+                model=model,
+                messages=messages,
+                response_format={"type": response_type},
+                tools=tools,
+                stream=stream
+            )
+            return response
         except Exception as e:
             logger.error(f"Error summarizing text: {e}")
             return None

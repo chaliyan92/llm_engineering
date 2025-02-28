@@ -1,11 +1,14 @@
-from web_page_summarizer.webpage_summarizer import WebPageSummarizer
-from company_brochure.company_brochure import CompanyBrochure
-from chatbot.chatbot import ChatBot
+# from web_page_summarizer.webpage_summarizer import WebPageSummarizer
+# from company_brochure.company_brochure import CompanyBrochure
+# from chatbot.chatbot import ChatBot
 from common.utils.openai_util import OpenAIUtils
+from airline_assistant.airline_assistant import AirlineAssistant
 
 if __name__ == "__main__":
 
-    ChatBot(OpenAIUtils()).launch_chatbot()
+    AirlineAssistant(OpenAIUtils()).launch_chatbot()
+
+    # ChatBot(OpenAIUtils()).launch_chatbot()
 
     # CompanyBrochure("Hugging Face", "https://huggingface.co", OpenAIUtils()).create_brochure()
     ''' 
