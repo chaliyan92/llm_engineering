@@ -76,3 +76,28 @@ Hugging Face
     - PEFT - ( Parameter-Efficient Fine-Tuning) To train LLM
     - TRL - Transformer Reinforcement Learning
     - Accelerate - Distributed configuration management
+
+## Week 3 - Day 2
+
+Running Hugging Face libraries using Google Colab
+
+### Learning Hugging Face Transformers
+
+Basically Hugging Face Transformer Library provides APIs to interact with open-source models for typical `inference` tasks using `pipelines`
+
+Follow this Hugging Face API https://huggingface.co/docs/transformers/main_classes/pipelines#transformers.pipeline.task
+
+Side note: 
+1. Training
+
+    Training is when you provide a model with data for it to adapt to get better at a task in the future. It does this by updating its internal settings - the parameters or weights of the model. If you're Training a model that's already had some training, the activity is called "fine-tuning".
+
+2. Inference
+
+    Inference is when you are working with a model that has already been trained. You are using that model to produce new outputs on new inputs, taking advantage of everything it learned while it was being trained. Inference is also sometimes referred to as "Execution" or "Running a model".
+
+From this point onwards please follow the Google Colab links I provide here
+
+Link- https://colab.research.google.com/drive/14fG6AElqZxDJs940PjgjJ9Etns_OmryB#scrollTo=olaJP0u0H5xW
+
+Note - Understand the __call__ in HuggingFace refer [Python Notes](python_notes.md)
